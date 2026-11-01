@@ -46,6 +46,7 @@
   .brk{font-family:"Hind";font-size:13px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:500;display:block;margin-bottom:2px}
   .val{font-family:"Hind";font-size:15px;color:var(--glow);font-weight:700;text-transform:none;letter-spacing:0;margin-left:8px}
   .pick{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;user-select:none;background:var(--surface2);padding:8px 14px;border-radius:999px}
+  .pick:has(input:disabled){cursor:default;opacity:.9;background:rgba(59,107,196,.18)}
   .pick input{width:18px;height:18px;accent-color:var(--ember)}
   .note{font-size:13px;color:var(--warn);margin-top:8px}
 
@@ -265,19 +266,30 @@
     </div>
   </article>
 
-  <!-- 5 Reorganizar -->
+</section>
+
+<!-- ================= FASE 2 ================= -->
+<section class="phase">
+  <div class="phase-head">
+    <span class="n" style="background:linear-gradient(135deg,#1f7a4a,#3fb67a)">FASE 2</span><h2>Novas vitrines</h2>
+    <p>Tudo o que você aluga, organizado em um lugar só e com cara de loja.</p>
+  </div>
+
+  <!-- 5 Plataforma -->
   <article class="mod">
     <div>
-      <h3>5 · Site e painel reorganizados</h3>
+      <h3>5 · Refazer o site como plataforma</h3>
       <div class="ask">"O jeito que está já está ficando difícil… tive que tirar um monte de item porque não está cabendo."</div>
       <ul>
+        <li>O site deixa de ser só catálogo de carros e vira a <b>Plataforma Queiroz</b></li>
         <li>Menu novo com as seções: Carros, Motos, Chácara, Hospedagem, Explora e Loja</li>
+        <li>Banco de dados preparado para qualquer tipo de item: veículo, espaço, quarto ou produto à venda</li>
         <li>Painel admin com abas separadas, sem limite de itens</li>
         <li>Resumo do dia no painel: alugados agora, devoluções e receita do mês</li>
-        <li>Base para os módulos das fases 2 e 3</li>
       </ul>
+      <div class="note">🔒 <b>Incluído automaticamente</b> quando você escolhe algum módulo que muda a estrutura do site (Chácara, Hospedagem, Explora, Loja, Combina com ou Bate-papo). Se escolher só os módulos de agenda, robô, lembrete, preços e categorias, ele não entra.</div>
       <div class="price"><div class="hours">8h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" checked data-h="8" data-name="Site e painel reorganizados"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" checked disabled data-h="16" data-base="1" data-name="Refazer o site como plataforma"> <span class="auto-lbl">Incluído automaticamente</span></label></div>
     </div>
     <div class="phone">
       <div class="bar"><span class="logo"><i></i>Painel</span><span class="mut">Queiroz</span></div>
@@ -294,14 +306,6 @@
       <div class="mut" style="text-align:center;margin-top:6px">números ilustrativos</div>
     </div>
   </article>
-</section>
-
-<!-- ================= FASE 2 ================= -->
-<section class="phase">
-  <div class="phase-head">
-    <span class="n" style="background:linear-gradient(135deg,#1f7a4a,#3fb67a)">FASE 2</span><h2>Novas vitrines</h2>
-    <p>Tudo o que você aluga, organizado em um lugar só e com cara de loja.</p>
-  </div>
 
   <!-- 6 Chácara -->
   <article class="mod">
@@ -315,7 +319,7 @@
         <li>Calendário com os dias livres e ocupados e reserva pelo site</li>
       </ul>
       <div class="price"><div class="hours">10h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" checked data-h="10" data-name="Página da Chácara"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" checked data-h="10" data-struct="1" data-name="Página da Chácara"> Quero este</label></div>
     </div>
     <div class="phone">
       <div class="bar"><span class="logo"><i></i>Queiroz Car</span></div>
@@ -345,7 +349,7 @@
         <li>Combinação com aluguel de carro ou moto para o viajante</li>
       </ul>
       <div class="price"><div class="hours">12h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" checked data-h="12" data-name="Hospedagem"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" checked data-h="12" data-struct="1" data-name="Hospedagem"> Quero este</label></div>
     </div>
     <div class="phone">
       <div class="bar"><span class="logo"><i></i>Hospedagem</span></div>
@@ -396,7 +400,7 @@
         <li>Reserva junto com o carro, a chácara ou a hospedagem</li>
       </ul>
       <div class="price"><div class="hours">6h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" checked data-h="6" data-name="Explora aqui (extras para alugar)"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" checked data-h="6" data-struct="1" data-name="Explora aqui (extras para alugar)"> Quero este</label></div>
     </div>
     <div class="phone">
       <div class="bar"><span class="logo"><i></i>Explora</span></div>
@@ -433,7 +437,7 @@
       </ul>
       <div class="note">Pagamento online (Pix/cartão pelo site) pode entrar depois: +16h.</div>
       <div class="price"><div class="hours">20h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" checked data-h="20" data-name="Loja de usados"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" checked data-h="20" data-struct="1" data-name="Loja de usados"> Quero este</label></div>
       <div class="price" style="border:none;margin-top:4px;padding-top:0"><div class="hours" style="font-size:18px">+16h<small>pagamento online (opcional)</small></div>
         <label class="pick"><input type="checkbox" data-h="16" data-name="Pagamento online na loja (opcional)"> + Pagamento online (opcional)</label></div>
     </div>
@@ -462,7 +466,7 @@
         <li>Botão para compartilhar o item com um amigo no WhatsApp</li>
       </ul>
       <div class="price"><div class="hours">6h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" checked data-h="6" data-name="Combina com (sugestões)"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" checked data-h="6" data-struct="1" data-name="Combina com (sugestões)"> Quero este</label></div>
     </div>
     <div class="phone">
       <div class="bar"><span class="logo"><i></i>Queiroz Car</span></div>
@@ -490,7 +494,7 @@
       </ul>
       <div class="note">⚠️ É o módulo mais trabalhoso e o que mais pede cuidado: moderação, abuso e privacidade. Sugiro fazer por último, depois que o resto estiver rodando.</div>
       <div class="price"><div class="hours">24h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" data-h="24" data-name="Sala de bate-papo"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" data-h="24" data-struct="1" data-name="Sala de bate-papo"> Quero este</label></div>
     </div>
     <div class="phone">
       <div class="bar"><span class="logo"><i></i>Bate-papo</span><span class="chip ok">23 online</span></div>
@@ -562,7 +566,14 @@
       a.setAttribute('aria-disabled', n ? 'false' : 'true');
     });
   }
-  boxes.forEach(b => b.addEventListener('change', update));
+  const base = boxes.find(b => b.dataset.base);
+  function syncBase(){
+    const need = boxes.some(b => b.dataset.struct && b.checked);
+    base.checked = need;
+    base.closest('.pick').querySelector('.auto-lbl').textContent = need ? 'Incluído automaticamente' : 'Não necessário';
+  }
+  boxes.forEach(b => b.addEventListener('change', () => { syncBase(); update(); }));
+  syncBase();
   update();
 </script>
 </body>
