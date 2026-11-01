@@ -187,16 +187,18 @@
   <!-- 2 Aviso pra você -->
   <article class="mod">
     <div>
-      <h3>2 · Aviso no seu WhatsApp</h3>
+      <h3>2 · Robô de WhatsApp</h3>
       <div class="ask">"Um encaminhamento de WhatsApp para mim, me lembrando que está chegando o horário do cliente, para eu já estar esperando."</div>
       <ul>
         <li>Mensagem automática no seu WhatsApp antes de cada retirada e devolução</li>
         <li>Você escolhe com quanto tempo de antecedência (ex.: 1h e 15 min antes)</li>
         <li>Resumo do dia toda manhã: quem retira e quem devolve hoje</li>
+        <li><b>Opcional:</b> robô com inteligência artificial que responde clientes, tira dúvidas de preço e disponibilidade e faz reservas pelo WhatsApp</li>
+        <li><b>Opcional:</b> conexões com outros sistemas (agenda, Pix, planilhas, Instagram…)</li>
       </ul>
-      <div class="note">⚠️ Este módulo prepara o envio automático de WhatsApp, que também serve para o módulo 3. O custo mensal do serviço de envio entra na hospedagem do site, informada à parte.</div>
+      <div class="note">💬 <b>Preço a combinar:</b> o valor depende do que você quer que o robô faça (só avisos ou atendimento com IA) e de quais conexões ele vai ter. A gente define isso juntos depois da sua escolha. Este módulo também é a base do módulo 3.</div>
       <div class="price"><div class="hours">14h<small>de desenvolvimento</small></div>
-        <label class="pick"><input type="checkbox" checked data-h="14" data-name="Aviso no seu WhatsApp"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" checked data-h="0" data-combinar="1" data-name="Robô de WhatsApp"> Quero este</label></div>
     </div>
     <div class="phone">
       <div class="wa-top"><span class="av"></span><div><b>Queiroz Car · Robô</b><div class="mut">online</div></div></div>
@@ -536,23 +538,25 @@
   const testH = h => Math.max(2, Math.round(h * 0.3)); // testes: 30% do dev, mínimo 2h
   const boxes = [...document.querySelectorAll('.pick input')];
   boxes.forEach(b => {
+    const hours = b.closest('.price').querySelector('.hours');
+    if (b.dataset.combinar){ b.dataset.tot = 0; hours.innerHTML = `<span class="brk">Definido junto com você</span>A combinar`; return; }
     const dev = +b.dataset.h, tst = testH(dev), tot = dev + tst;
     b.dataset.tot = tot;
-    const hours = b.closest('.price').querySelector('.hours');
     hours.innerHTML = `<span class="brk">Desenvolvimento ${dev}h + Testes ${tst}h</span>${tot}h<span class="val">${brl(tot * RATE)}</span>`;
   });
   function update(){
-    let t = 0, n = 0, rows = '';
+    let t = 0, n = 0, rows = '', comb = false;
+    const price = b => b.dataset.combinar ? 'a combinar' : `${b.dataset.tot}h · ${brl(b.dataset.tot * RATE)}`;
     boxes.forEach(b => {
       const h = +b.dataset.tot;
-      if (b.checked){ t += h; n++; rows += `<tr><td>${b.dataset.name}</td><td>${h}h · ${brl(h * RATE)}</td></tr>`; }
+      if (b.checked){ t += h; n++; if (b.dataset.combinar) comb = true; rows += `<tr><td>${b.dataset.name}</td><td>${price(b)}</td></tr>`; }
     });
-    rows += `<tr class="total"><td>Total</td><td>${t}h · ${brl(t * RATE)}</td></tr>`;
+    rows += `<tr class="total"><td>Total${comb ? ' <small class="mut" style="font-family:Hind;font-size:13px;text-transform:none">+ robô a combinar</small>' : ''}</td><td>${t}h · ${brl(t * RATE)}</td></tr>`;
     document.getElementById('resumo').innerHTML = n ? rows : '<tr><td>Nenhum módulo marcado.</td><td></td></tr>';
     document.getElementById('tot').textContent = `${t}h · ${brl(t * RATE)}`;
     document.getElementById('cnt').textContent = n + ' de ' + boxes.length + ' módulos selecionados';
-    const lines = boxes.filter(b => b.checked).map(b => `• ${b.dataset.name} (${b.dataset.tot}h · ${brl(b.dataset.tot * RATE)})`);
-    const msg = `Olá Igor! Escolhi estes módulos para a plataforma Queiroz Car:\n\n${lines.join('\n')}\n\n*Total: ${t}h · ${brl(t * RATE)}*\n(API e servidor calculados à parte)`;
+    const lines = boxes.filter(b => b.checked).map(b => `• ${b.dataset.name} (${price(b)})`);
+    const msg = `Olá Igor! Escolhi estes módulos para a plataforma Queiroz Car:\n\n${lines.join('\n')}\n\n*Total: ${t}h · ${brl(t * RATE)}*${comb ? '\n+ Robô de WhatsApp: preço a combinar' : ''}\n(API e servidor calculados à parte)`;
     document.querySelectorAll('.wa-send').forEach(a => {
       a.href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
       a.setAttribute('aria-disabled', n ? 'false' : 'true');
