@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Queiroz Car — Proposta de Evolução</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111; --surface:#1c1c1c; --surface2:#262626; --line:rgba(255,255,255,.08);
+    --fg:#f7f7f7; --muted:#a8a8a8; --ember:#3B6BC4; --glow:#5B8BDE; --ok:#3fb67a; --warn:#e0a03a; --bad:#e05a4f;
+    --grad:linear-gradient(135deg,var(--ember),var(--glow));
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--fg);font-family:"Hind",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.disp{font-family:"Archivo Black",system-ui,sans-serif;letter-spacing:-.02em;text-transform:uppercase}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+
+  /* topo */
+  .hero{padding:48px 0 32px;background:radial-gradient(ellipse at top,rgba(59,107,196,.35),transparent 60%)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--glow);margin-bottom:12px}
+  .hero h1{font-size:clamp(28px,6vw,48px);line-height:1.05}
+  .hero h1 span{color:var(--glow)}
+  .hero p{color:var(--muted);max-width:640px;margin-top:14px;font-size:17px}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .pill{font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--muted)}
+
+  /* fases */
+  .phase{padding:36px 0 8px}
+  .phase-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:12px}
+  .phase-head .n{font-family:"Archivo Black";font-size:13px;background:var(--grad);padding:4px 10px;border-radius:8px}
+  .phase-head h2{font-size:22px}
+  .phase-head p{color:var(--muted);font-size:15px;width:100%}
+
+  /* módulo */
+  .mod{display:grid;grid-template-columns:1fr 300px;gap:28px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;margin-bottom:20px}
+  .mod h3{font-size:19px;margin-bottom:6px}
+  .ask{border-left:3px solid var(--ember);background:rgba(59,107,196,.08);padding:10px 14px;border-radius:0 10px 10px 0;font-style:italic;color:#d6d6d6;margin:12px 0;font-size:15px}
+  .mod ul{list-style:none;margin:10px 0 0}
+  .mod li{padding:5px 0 5px 22px;position:relative;color:#ddd;font-size:15px}
+  .mod li:before{content:"✓";position:absolute;left:0;color:var(--glow);font-weight:700}
+  .price{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap}
+  .hours{font-family:"Archivo Black";font-size:26px}
+  .hours small{font-family:"Hind";font-size:13px;color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0;margin-left:4px}
+  .pick{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;user-select:none;background:var(--surface2);padding:8px 14px;border-radius:999px}
+  .pick input{width:18px;height:18px;accent-color:var(--ember)}
+  .note{font-size:13px;color:var(--warn);margin-top:8px}
+
+  /* celular mock */
+  .phone{background:#0b0b0b;border:8px solid #2b2b2b;border-radius:34px;padding:14px 12px 18px;min-height:470px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.5);font-size:13px;overflow:hidden}
+  .phone:before{content:"";display:block;width:70px;height:6px;border-radius:6px;background:#2b2b2b;margin:0 auto 12px}
+  .bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .logo{font-family:"Archivo Black";font-size:13px;text-transform:uppercase}
+  .logo i{display:inline-block;width:18px;height:18px;border-radius:5px;background:var(--grad);vertical-align:-4px;margin-right:6px}
+  .btn{display:block;text-align:center;background:var(--grad);color:#fff;border-radius:10px;padding:9px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-top:8px}
+  .btn.ghost{background:transparent;border:1px solid var(--line)}
+  .btn.wa{background:#25d366;color:#062}
+  .card{background:var(--surface2);border-radius:12px;padding:10px;margin-bottom:8px}
+  .img{height:78px;border-radius:9px;margin-bottom:8px;display:flex;align-items:flex-end;padding:7px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+  .g1{background:linear-gradient(135deg,#1f4d2f,#3b8a55)} .g2{background:linear-gradient(135deg,#3a2a59,#6b4ca0)}
+  .g3{background:linear-gradient(135deg,#183a6b,#3B6BC4)} .g4{background:linear-gradient(135deg,#5a3816,#b8742f)}
+  .g5{background:linear-gradient(135deg,#2a2a2a,#4a4a4a)} .g6{background:linear-gradient(135deg,#5b1a1a,#a33)}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:6px}
+  .mut{color:var(--muted);font-size:11px}
+  .b{font-weight:700}
+  .chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.07);margin:0 4px 4px 0}
+  .chip.on{background:var(--grad)}
+  .chip.ok{background:rgba(63,182,122,.2);color:#7fe0aa}
+  .chip.off{background:rgba(224,90,79,.2);color:#f59a91}
+  .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:rgba(255,255,255,.06);border-radius:10px;padding:4px;margin-bottom:10px}
+  .tabs span{text-align:center;font-size:10px;font-weight:700;padding:7px 0;border-radius:7px;text-transform:uppercase}
+  .tabs span.on{background:var(--grad)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .grid2 .card{margin:0}
+  .grid2 .img{height:58px}
+  .wa-bubble{background:#1f2c34;border-radius:0 10px 10px 10px;padding:9px 10px;margin:8px 0;max-width:92%;font-size:12px}
+  .wa-bubble.me{background:#005c4b;border-radius:10px 0 10px 10px;margin-left:auto}
+  .wa-top{background:#1f2c34;margin:-14px -12px 10px;padding:12px;display:flex;gap:8px;align-items:center}
+  .av{width:28px;height:28px;border-radius:50%;background:var(--grad);flex:none}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;font-size:10px;margin:8px 0}
+  .cal b{color:var(--muted);font-weight:600}
+  .cal span{padding:6px 0;border-radius:6px;background:rgba(255,255,255,.04)}
+  .cal span.ev{background:var(--grad);font-weight:700}
+  .cal span.ev2{background:#3fb67a;color:#052;font-weight:700}
+  .ev-line{border-left:3px solid var(--ember);padding:6px 8px;background:rgba(59,107,196,.12);border-radius:0 8px 8px 0;margin-bottom:6px;font-size:12px}
+  .ev-line.g{border-color:#3fb67a;background:rgba(63,182,122,.12)}
+  table.t{width:100%;border-collapse:collapse;font-size:12px}
+  table.t td{padding:6px 2px;border-bottom:1px solid var(--line)}
+  table.t td:last-child{text-align:right;font-weight:700}
+  .strike{text-decoration:line-through;color:var(--muted);font-weight:400;margin-right:4px}
+  .chat{height:300px;display:flex;flex-direction:column;gap:6px}
+  .msg{font-size:12px;background:var(--surface2);border-radius:10px;padding:6px 9px;max-width:85%}
+  .msg b{color:var(--glow);font-size:11px;display:block}
+  .msg.me{background:rgba(59,107,196,.3);align-self:flex-end}
+  .input{margin-top:auto;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:12px}
+  .notif{position:absolute;left:10px;right:10px;top:34px;background:rgba(40,40,40,.97);border:1px solid var(--line);border-radius:14px;padding:10px;display:flex;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:2}
+  .notif .ic{width:30px;height:30px;border-radius:8px;background:#25d366;flex:none}
+  .dim{opacity:.35;filter:blur(1px)}
+  .admin-side{display:flex;gap:6px;overflow:hidden;margin-bottom:10px}
+  .admin-side span{font-size:10px;font-weight:700;padding:6px 9px;border-radius:8px;background:rgba(255,255,255,.06);white-space:nowrap}
+  .admin-side span.on{background:var(--grad)}
+  .kpi{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+  .kpi div{background:var(--surface2);border-radius:10px;padding:8px}
+  .kpi strong{font-family:"Archivo Black";font-size:16px;display:block}
+
+  /* resumo */
+  .sum{position:sticky;bottom:0;background:rgba(17,17,17,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:12px 0;z-index:10}
+  .sum .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .sum .tot{font-family:"Archivo Black";font-size:22px}
+  .sum .tot span{color:var(--glow)}
+  .sum small{color:var(--muted);font-size:13px}
+  .final{margin:40px 0 30px;padding:24px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+  .final h2{font-size:20px;margin-bottom:12px}
+  .final table{width:100%;border-collapse:collapse;font-size:15px}
+  .final td{padding:9px 4px;border-bottom:1px solid var(--line)}
+  .final td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+  .final tr.total td{font-family:"Archivo Black";font-size:18px;border:none;padding-top:14px}
+  .foot{color:var(--muted);font-size:13px;padding:0 0 100px}
+  .foot p{margin-bottom:8px}
+
+  @media (max-width:760px){
+    .mod{grid-template-columns:1fr;padding:18px}
+    .phone{max-width:320px;margin:0 auto;width:100%}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="tag">Proposta de evolução · Queiroz Car</div>
+    <h1>Do catálogo de carros para a <span>plataforma completa</span></h1>
+    <p>Separei cada pedido seu e mostro como ficaria a tela de cada um. É um esboço para você ver a ideia antes de começarmos. Cada módulo tem o tempo estimado de desenvolvimento, e você pode marcar só os que quiser: o total no rodapé vai somando.</p>
+    <div class="legend">
+      <span class="pill">🟦 Fase 1 · organizar o seu dia</span>
+      <span class="pill">🟩 Fase 2 · novas vitrines</span>
+      <span class="pill">🟧 Fase 3 · loja e comunidade</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= FASE 1 ================= -->
+<section class="phase">
+  <div class="phase-head">
+    <span class="n">FASE 1</span><h2>Organizar o seu dia</h2>
+    <p>Menos trabalho repetido: o site passa a anotar, avisar e lembrar por você.</p>
+  </div>
+
+  <!-- 1 Agenda -->
+  <article class="mod">
+    <div>
+      <h3>1 · Agenda automática no seu calendário</h3>
+      <div class="ask">"O agendamento feito lá cair dentro do meu calendário automático… tenho que ficar preenchendo os dois lados."</div>
+      <ul>
+        <li>Cada aluguel feito no site entra sozinho no seu Google Agenda do celular</li>
+        <li>Nome do cliente, veículo, horário de retirada e devolução já preenchidos</li>
+        <li>Se o aluguel for alterado ou cancelado no painel, a agenda se atualiza</li>
+        <li>Cores diferentes para carro, moto, chácara e hospedagem</li>
+      </ul>
+      <div class="price"><div class="hours" data-h="12">12h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="12" data-name="Agenda automática no calendário"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo">Google Agenda</span><span class="mut">Nov 2026</span></div>
+      <div class="cal">
+        <b>D</b><b>S</b><b>T</b><b>Q</b><b>Q</b><b>S</b><b>S</b>
+        <span>1</span><span>2</span><span class="ev">3</span><span>4</span><span class="ev">5</span><span class="ev2">6</span><span class="ev2">7</span>
+        <span>8</span><span class="ev">9</span><span>10</span><span>11</span><span class="ev">12</span><span>13</span><span class="ev2">14</span>
+      </div>
+      <div class="mut" style="margin:10px 0 6px">Terça, 3 de novembro</div>
+      <div class="ev-line"><b>🚗 Onix 1.0 · João Silva</b><br><span class="mut">Retirada 08:00 → Devolução 05/11 18:00</span></div>
+      <div class="ev-line"><b>🏍️ CG 160 · Marcos</b><br><span class="mut">Retirada 14:00 → 18:00</span></div>
+      <div class="mut" style="margin:10px 0 6px">Sexta, 6 de novembro</div>
+      <div class="ev-line g"><b>🌳 Chácara · Ana Paula</b><br><span class="mut">Fim de semana · sex 16:00 → dom 18:00</span></div>
+      <div class="mut" style="text-align:center;margin-top:14px">✨ criado automaticamente pelo site</div>
+    </div>
+  </article>
+
+  <!-- 2 Aviso pra você -->
+  <article class="mod">
+    <div>
+      <h3>2 · Aviso no seu WhatsApp</h3>
+      <div class="ask">"Um encaminhamento de WhatsApp para mim, me lembrando que está chegando o horário do cliente, para eu já estar esperando."</div>
+      <ul>
+        <li>Mensagem automática no seu WhatsApp antes de cada retirada e devolução</li>
+        <li>Você escolhe com quanto tempo de antecedência (ex.: 1h e 15 min antes)</li>
+        <li>Resumo do dia toda manhã: quem retira e quem devolve hoje</li>
+      </ul>
+      <div class="note">⚠️ Este módulo prepara o envio automático de WhatsApp, que também serve para o módulo 3. O custo mensal do serviço de envio entra na hospedagem do site, informada à parte.</div>
+      <div class="price"><div class="hours">14h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="14" data-name="Aviso no seu WhatsApp"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="wa-top"><span class="av"></span><div><b>Queiroz Car · Robô</b><div class="mut">online</div></div></div>
+      <div class="wa-bubble">☀️ <b>Bom dia, Queiroz!</b> Hoje você tem:<br>• 08:00 retirada Onix (João)<br>• 14:00 retirada CG 160 (Marcos)<br>• 18:00 devolução HB20 (Carla)</div>
+      <div class="wa-bubble">⏰ <b>Em 1 hora:</b> João Silva vem retirar o <b>Onix 1.0</b> às 08:00.<br>📞 (86) 9XXXX-XXXX</div>
+      <div class="wa-bubble">🔔 <b>Em 15 min:</b> devolução do <b>HB20</b> pela Carla. Já pode ir esperando no local.</div>
+      <div class="wa-bubble me">Valeu 👍</div>
+    </div>
+  </article>
+
+  <!-- 3 Lembrete cliente -->
+  <article class="mod">
+    <div>
+      <h3>3 · Lembrete para o cliente renovar</h3>
+      <div class="ask">"O sistema mandar um lembrete para o cliente que está alugado, duas horas antes, alguns minutos antes, para ele renovar ou entrar em contato."</div>
+      <ul>
+        <li>WhatsApp automático para o cliente 2h e 30 min antes do fim do aluguel</li>
+        <li>Botão "Quero renovar", que abre a renovação já com o preço calculado</li>
+        <li>Botão "Falar com o Queiroz", que abre a conversa com você</li>
+      </ul>
+      <div class="note">Usa o envio automático do módulo 2, por isso sai mais barato.</div>
+      <div class="price"><div class="hours">6h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="6" data-name="Lembrete para o cliente renovar"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="dim">
+        <div class="bar"><span class="logo"><i></i>Queiroz Car</span></div>
+        <div class="card"><div class="img g3">Onix 1.0</div><div class="mut">Seu aluguel termina hoje 18:00</div></div>
+        <div class="card"><div class="img g5"></div></div>
+      </div>
+      <div class="notif"><span class="ic"></span><div><b style="font-size:12px">Queiroz Car</b><div style="font-size:12px">Oi João! Seu aluguel do <b>Onix 1.0</b> termina em <b>2 horas</b> (18:00). Quer ficar mais um dia?</div>
+        <span class="btn" style="padding:6px">🔁 Quero renovar · R$ 150</span>
+        <span class="btn ghost" style="padding:6px">💬 Falar com o Queiroz</span></div></div>
+    </div>
+  </article>
+
+  <!-- 4 Preço variável e desconto -->
+  <article class="mod">
+    <div>
+      <h3>4 · Preço variável e desconto por diárias</h3>
+      <div class="ask">"Aquela lá tem preços variáveis… caso a pessoa pegue dois dias, poderia existir um desconto para o cliente."</div>
+      <ul>
+        <li>Preço diferente por dia da semana, fim de semana e feriado</li>
+        <li>Desconto automático a partir de 2, 3 ou 7 diárias, com a % definida por você</li>
+        <li>O cliente vê na hora quanto economiza</li>
+        <li>Tudo configurável no painel, sem precisar de programador</li>
+      </ul>
+      <div class="price"><div class="hours">8h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="8" data-name="Preço variável e desconto por diárias"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Queiroz Car</span></div>
+      <div class="img g3" style="height:90px">HB20 2023</div>
+      <div class="b" style="margin:6px 0">Quantos dias?</div>
+      <div><span class="chip">1 dia</span><span class="chip on">2 dias</span><span class="chip">3 dias</span><span class="chip">7 dias</span></div>
+      <table class="t" style="margin-top:8px">
+        <tr><td>Sexta (fim de semana)</td><td>R$ 180</td></tr>
+        <tr><td>Sábado (fim de semana)</td><td>R$ 180</td></tr>
+        <tr><td>Desconto 2 diárias (10%)</td><td style="color:#7fe0aa">− R$ 36</td></tr>
+        <tr><td class="b">Total</td><td><span class="strike">R$ 360</span>R$ 324</td></tr>
+      </table>
+      <div class="chip ok" style="margin-top:10px">🎉 Você economiza R$ 36</div>
+      <span class="btn">Reservar</span>
+    </div>
+  </article>
+
+  <!-- 5 Reorganizar -->
+  <article class="mod">
+    <div>
+      <h3>5 · Site e painel reorganizados</h3>
+      <div class="ask">"O jeito que está já está ficando difícil… tive que tirar um monte de item porque não está cabendo."</div>
+      <ul>
+        <li>Menu novo com as seções: Carros, Motos, Chácara, Hospedagem, Explora e Loja</li>
+        <li>Painel admin com abas separadas, sem limite de itens</li>
+        <li>Resumo do dia no painel: alugados agora, devoluções e receita do mês</li>
+        <li>Base para os módulos das fases 2 e 3</li>
+      </ul>
+      <div class="price"><div class="hours">8h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="8" data-name="Site e painel reorganizados"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Painel</span><span class="mut">Queiroz</span></div>
+      <div class="admin-side"><span class="on">Hoje</span><span>Veículos</span><span>Chácara</span><span>Hospedagem</span><span>Loja</span></div>
+      <div class="kpi">
+        <div><span class="mut">Alugados agora</span><strong>7</strong></div>
+        <div><span class="mut">Devoluções hoje</span><strong>3</strong></div>
+        <div><span class="mut">Reservas da semana</span><strong>12</strong></div>
+        <div><span class="mut">Receita do mês</span><strong>R$ 9,4 mil</strong></div>
+      </div>
+      <div class="card row"><span>🚗 Onix · João</span><span class="chip off">devolve 18:00</span></div>
+      <div class="card row"><span>🌳 Chácara · Ana</span><span class="chip ok">sex → dom</span></div>
+      <div class="card row"><span>🛏️ Quarto casal</span><span class="chip ok">livre</span></div>
+      <div class="mut" style="text-align:center;margin-top:6px">números ilustrativos</div>
+    </div>
+  </article>
+</section>
+
+<!-- ================= FASE 2 ================= -->
+<section class="phase">
+  <div class="phase-head">
+    <span class="n" style="background:linear-gradient(135deg,#1f7a4a,#3fb67a)">FASE 2</span><h2>Novas vitrines</h2>
+    <p>Tudo o que você aluga, organizado em um lugar só e com cara de loja.</p>
+  </div>
+
+  <!-- 6 Chácara -->
+  <article class="mod">
+    <div>
+      <h3>6 · Página da Chácara</h3>
+      <div class="ask">"Melhorar uma entrada para o lado da chácara… fim de semana R$ 200 no dia, 24 horas R$ 250, horário discriminado, com a foto e aquela abertura legal."</div>
+      <ul>
+        <li>Abertura com foto grande e galeria da chácara</li>
+        <li>Tabela de preços clara: diária de fim de semana, pacote de 24h e outros</li>
+        <li>Horários de entrada e saída descritos para cada pacote</li>
+        <li>Calendário com os dias livres e ocupados e reserva pelo site</li>
+      </ul>
+      <div class="price"><div class="hours">10h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="10" data-name="Página da Chácara"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Queiroz Car</span></div>
+      <div class="img g1" style="height:120px;font-size:14px;flex-direction:column;align-items:flex-start;justify-content:flex-end">
+        <span style="font-size:9px;opacity:.8">ALUGUE PARA SEU EVENTO</span>
+        <span class="disp" style="font-size:20px">Chácara</span></div>
+      <div style="display:flex;gap:4px;margin:6px 0"><div class="img g1" style="height:34px;flex:1;margin:0"></div><div class="img g1" style="height:34px;flex:1;margin:0;opacity:.7"></div><div class="img g1" style="height:34px;flex:1;margin:0;opacity:.5"></div></div>
+      <table class="t">
+        <tr><td>Fim de semana · diária<br><span class="mut">08:00 às 22:00</span></td><td>R$ 200</td></tr>
+        <tr><td>Pacote 24 horas<br><span class="mut">entrada e saída no mesmo horário</span></td><td>R$ 250</td></tr>
+        <tr><td>Dia de semana<br><span class="mut">08:00 às 18:00</span></td><td>sob consulta</td></tr>
+      </table>
+      <div style="margin-top:8px"><span class="chip ok">sáb 7 livre</span><span class="chip off">sáb 14 ocupado</span></div>
+      <span class="btn">Ver datas e reservar</span>
+    </div>
+  </article>
+
+  <!-- 7 Hospedagem -->
+  <article class="mod">
+    <div>
+      <h3>7 · Hospedagem</h3>
+      <div class="ask">"Hospedagem, semana, casal R$ 70… R$ 50 uma pessoa… de repente um viajante quer vir se hospedar."</div>
+      <ul>
+        <li>Opções de quarto (casal e individual) com preço por noite</li>
+        <li>Fotos, o que está incluso e regras da casa</li>
+        <li>Reserva com data de entrada e saída, sem conflito de datas</li>
+        <li>Combinação com aluguel de carro ou moto para o viajante</li>
+      </ul>
+      <div class="price"><div class="hours">12h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="12" data-name="Hospedagem"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Hospedagem</span></div>
+      <div class="mut">Vai passar por Piripiri? Fique com a gente.</div>
+      <div class="card" style="margin-top:8px"><div class="img g2">Quarto casal</div>
+        <div class="row"><span class="b">Casal</span><span class="b">R$ 70 <span class="mut">/noite</span></span></div>
+        <span class="chip">❄️ ar</span><span class="chip">📶 wi-fi</span><span class="chip">🚿 banheiro</span></div>
+      <div class="card"><div class="img g2" style="opacity:.8">Quarto individual</div>
+        <div class="row"><span class="b">Individual</span><span class="b">R$ 50 <span class="mut">/noite</span></span></div></div>
+      <div class="card row" style="background:rgba(59,107,196,.15)"><span>🚗 Precisa de carro também?</span><span class="chip on">ver</span></div>
+    </div>
+  </article>
+
+  <!-- 8 Categorias carros -->
+  <article class="mod">
+    <div>
+      <h3>8 · Carros por categoria</h3>
+      <div class="ask">"Botar na classe econômica, classe executiva, intermediário, premium… as motos separadas, como já está."</div>
+      <ul>
+        <li>Filtro por categoria: Econômico, Intermediário, Executivo e Premium</li>
+        <li>Você escolhe a categoria de cada carro no cadastro</li>
+        <li>As motos continuam na aba própria, como já funciona hoje</li>
+      </ul>
+      <div class="price"><div class="hours">4h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="4" data-name="Carros por categoria"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Queiroz Car</span></div>
+      <div class="tabs"><span class="on">Carros</span><span>Motos</span><span>Chácara</span><span>Extras</span></div>
+      <div><span class="chip">Econômico</span><span class="chip on">Intermediário</span><span class="chip">Executivo</span><span class="chip">Premium</span></div>
+      <div class="grid2" style="margin-top:6px">
+        <div class="card"><div class="img g3">HB20</div><div class="b">R$ 150<span class="mut">/dia</span></div><span class="chip ok">disponível</span></div>
+        <div class="card"><div class="img g3">Onix</div><div class="b">R$ 150<span class="mut">/dia</span></div><span class="chip ok">disponível</span></div>
+        <div class="card"><div class="img g3">Argo</div><div class="b">R$ 160<span class="mut">/dia</span></div><span class="chip off">alugado</span></div>
+        <div class="card"><div class="img g3">Polo</div><div class="b">R$ 170<span class="mut">/dia</span></div><span class="chip ok">disponível</span></div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 9 Explora -->
+  <article class="mod">
+    <div>
+      <h3>9 · "Explora aqui": diversão para alugar</h3>
+      <div class="ask">"Explora aqui, não fique de bobeira, chegou em Piripiri… tem som disponível, tem videogame, tem televisão."</div>
+      <ul>
+        <li>Vitrine própria para os extras: som/JBL, videogame, TV e o que mais tiver</li>
+        <li>Preço por dia e disponibilidade de cada item</li>
+        <li>Reserva junto com o carro, a chácara ou a hospedagem</li>
+      </ul>
+      <div class="price"><div class="hours">6h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="6" data-name="Explora aqui (extras para alugar)"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Explora</span></div>
+      <div class="disp" style="font-size:17px;line-height:1.1">Chegou em Piripiri?<br><span style="color:var(--glow)">Não fique de bobeira.</span></div>
+      <div class="grid2" style="margin-top:10px">
+        <div class="card"><div class="img g4">🔊 Som JBL</div><div class="b">R$ 60<span class="mut">/dia</span></div></div>
+        <div class="card"><div class="img g4">🎮 Videogame</div><div class="b">R$ 50<span class="mut">/dia</span></div></div>
+        <div class="card"><div class="img g4">📺 TV 50"</div><div class="b">R$ 40<span class="mut">/dia</span></div></div>
+        <div class="card"><div class="img g4">❄️ Caixa térmica</div><div class="b">R$ 15<span class="mut">/dia</span></div></div>
+      </div>
+      <div class="mut" style="text-align:center;margin-top:6px">preços ilustrativos</div>
+    </div>
+  </article>
+</section>
+
+<!-- ================= FASE 3 ================= -->
+<section class="phase">
+  <div class="phase-head">
+    <span class="n" style="background:linear-gradient(135deg,#a0601c,#e0a03a)">FASE 3</span><h2>Loja e comunidade</h2>
+    <p>O site também passa a vender e a trazer gente que entra só para ver o que tem.</p>
+  </div>
+
+  <!-- 10 Loja -->
+  <article class="mod">
+    <div>
+      <h3>10 · Loja de usados (tipo Mercado Livre)</h3>
+      <div class="ask">"Uma plataforma de venda… venda de carro, de moto, de JBL, videogame, peças… vendo as minhas próprias coisas no meu próprio site."</div>
+      <ul>
+        <li>Anúncios com fotos, preço, estado (novo, seminovo ou usado) e descrição</li>
+        <li>Categorias: Veículos, Som, Games, Peças e Outros</li>
+        <li>Busca e filtros por categoria e faixa de preço</li>
+        <li>Botão "Tenho interesse", que abre o seu WhatsApp com o produto já escrito</li>
+        <li>Cadastro, edição e marcação de "vendido" pelo painel</li>
+      </ul>
+      <div class="note">Pagamento online (Pix/cartão pelo site) pode entrar depois: +16h.</div>
+      <div class="price"><div class="hours">20h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="20" data-name="Loja de usados"> Quero este</label></div>
+      <div class="price" style="border:none;margin-top:4px;padding-top:0"><div class="hours" style="font-size:18px">+16h<small>pagamento online (opcional)</small></div>
+        <label class="pick"><input type="checkbox" data-h="16" data-name="Pagamento online na loja (opcional)"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Loja Queiroz</span><span class="mut">🔍</span></div>
+      <div><span class="chip on">Tudo</span><span class="chip">Veículos</span><span class="chip">Som</span><span class="chip">Games</span><span class="chip">Peças</span></div>
+      <div class="grid2" style="margin-top:6px">
+        <div class="card"><div class="img g6">Moto</div><div style="font-size:11px">CG 150 2015</div><div class="b">R$ 8.500</div><span class="chip">usado</span></div>
+        <div class="card"><div class="img g4">JBL</div><div style="font-size:11px">JBL Boombox</div><div class="b">R$ 1.200</div><span class="chip">seminovo</span></div>
+        <div class="card"><div class="img g2">Game</div><div style="font-size:11px">PS4 + 2 controles</div><div class="b">R$ 1.400</div><span class="chip">usado</span></div>
+        <div class="card"><div class="img g5">Peça</div><div style="font-size:11px">Jogo de rodas 15"</div><div class="b">R$ 900</div><span class="chip">usado</span></div>
+      </div>
+      <span class="btn wa">💬 Tenho interesse</span>
+    </div>
+  </article>
+
+  <!-- 11 Sugestões -->
+  <article class="mod">
+    <div>
+      <h3>11 · "Combina com": uma coisa leva à outra</h3>
+      <div class="ask">"É como comprar um hambúrguer e pedir uma batata, um refrigerante, uma sobremesa… ela acaba achando alguma coisa que já estava procurando."</div>
+      <ul>
+        <li>Em cada página aparecem sugestões relacionadas</li>
+        <li>Alugou a chácara? Sugere som e caixa térmica. Hospedou? Sugere carro ou moto.</li>
+        <li>Você define as combinações no painel</li>
+        <li>Botão para compartilhar o item com um amigo no WhatsApp</li>
+      </ul>
+      <div class="price"><div class="hours">6h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" checked data-h="6" data-name="Combina com (sugestões)"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Queiroz Car</span></div>
+      <div class="img g1" style="height:90px">Chácara · fim de semana</div>
+      <div class="row"><span class="b">R$ 200/dia</span><span class="chip ok">sáb livre</span></div>
+      <div class="b" style="margin:12px 0 6px">🍟 Combina com a sua festa</div>
+      <div class="card row"><span>🔊 Som JBL</span><span class="b">+ R$ 60</span></div>
+      <div class="card row"><span>❄️ Caixa térmica</span><span class="b">+ R$ 15</span></div>
+      <div class="card row"><span>🚗 Carro para o fim de semana</span><span class="b">+ R$ 150</span></div>
+      <span class="btn">Reservar tudo junto</span>
+      <span class="btn ghost">📤 Mandar para um amigo</span>
+    </div>
+  </article>
+
+  <!-- 12 Chat -->
+  <article class="mod">
+    <div>
+      <h3>12 · Sala de bate-papo</h3>
+      <div class="ask">"Uma sala de bate-papo igual à da UOL, para entrar e fazer amizade lá dentro, sugestões de cidade…"</div>
+      <ul>
+        <li>Salas por assunto: Geral, Rolês em Piripiri e Viajantes</li>
+        <li>Entrada com apelido e telefone confirmado, para evitar bagunça</li>
+        <li>Moderação pelo painel: apagar mensagem e bloquear usuário</li>
+        <li>Filtro automático de palavrões e links</li>
+      </ul>
+      <div class="note">⚠️ É o módulo mais trabalhoso e o que mais pede cuidado: moderação, abuso e privacidade. Sugiro fazer por último, depois que o resto estiver rodando.</div>
+      <div class="price"><div class="hours">24h<small>de desenvolvimento</small></div>
+        <label class="pick"><input type="checkbox" data-h="24" data-name="Sala de bate-papo"> Quero este</label></div>
+    </div>
+    <div class="phone">
+      <div class="bar"><span class="logo"><i></i>Bate-papo</span><span class="chip ok">23 online</span></div>
+      <div><span class="chip">Geral</span><span class="chip on">Rolês em Piripiri</span><span class="chip">Viajantes</span></div>
+      <div class="chat" style="margin-top:8px">
+        <div class="msg"><b>Viajante_SP</b>Chegando sexta, alguém indica onde comer bem?</div>
+        <div class="msg"><b>Lucas86</b>Vai no centro à noite, tem várias opções 👌</div>
+        <div class="msg"><b>Mari</b>E o açude é bom pra ir no domingo</div>
+        <div class="msg me"><b>Você</b>Valeu galera! Vou alugar a chácara 😄</div>
+        <div class="input">Digite uma mensagem…</div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ================= RESUMO ================= -->
+<section class="final">
+  <h2>Resumo da proposta</h2>
+  <table id="resumo"></table>
+</section>
+
+<div class="foot">
+  <p>• As telas acima são <b>esboços para mostrar a ideia</b>. O visual final segue a identidade atual do site (cores, logo e fotos reais dos seus veículos).</p>
+  <p>• Os tempos são <b>estimativas em horas de desenvolvimento</b> (desenvolvedor júnior com apoio de ferramentas de IA) e podem mudar um pouco quando detalharmos cada item.</p>
+  <p>• Os preços dentro das telas são ilustrativos, exceto os que você mesmo passou (chácara e hospedagem).</p>
+  <p>• <b>Os valores de hospedagem do site (servidor, banco de dados e serviços como o envio automático de WhatsApp e o pagamento online) são cobrados à parte</b> das horas acima. Eles serão informados conforme você aprovar os módulos, porque cada módulo muda o que o site precisa para funcionar.</p>
+</div>
+
+</main>
+
+<div class="sum">
+  <div class="wrap">
+    <div><div class="tot">Total: <span id="tot">0h</span></div><small id="cnt"></small></div>
+    <small>Hospedagem do site à parte · marque os módulos acima ☝️</small>
+  </div>
+</div>
+
+<script>
+  const boxes = [...document.querySelectorAll('.pick input')];
+  function update(){
+    let t = 0, n = 0, rows = '';
+    boxes.forEach(b => {
+      const h = +b.dataset.h;
+      if (b.checked){ t += h; n++; rows += `<tr><td>${b.dataset.name}</td><td>${h}h</td></tr>`; }
+    });
+    rows += `<tr class="total"><td>Total</td><td>${t}h</td></tr>`;
+    document.getElementById('resumo').innerHTML = n ? rows : '<tr><td>Nenhum módulo marcado.</td><td></td></tr>';
+    document.getElementById('tot').textContent = t + 'h';
+    document.getElementById('cnt').textContent = n + ' de ' + boxes.length + ' módulos selecionados';
+  }
+  boxes.forEach(b => b.addEventListener('change', update));
+  update();
+</script>
+</body>
+</html>
