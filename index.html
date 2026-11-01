@@ -510,7 +510,7 @@
 <div class="foot">
   <p>• As telas acima são <b>esboços para mostrar a ideia</b>. O visual final segue a identidade atual do site (cores, logo e fotos reais dos seus veículos).</p>
   <p>• Os tempos são <b>estimativas em horas</b> (desenvolvedor júnior com apoio de ferramentas de IA) e podem mudar um pouco quando detalharmos cada item. Cada módulo inclui o <b>tempo de testes</b> (cerca de 30% do desenvolvimento, mínimo de 2h) para entregar funcionando de verdade.</p>
-  <p>• Valor da hora: <b>R$ 40</b>. O valor de cada módulo é o total de horas (desenvolvimento + testes) × R$ 40.</p>
+  <p>• Valor da hora: <b>R$ 25</b>. O valor de cada módulo é o total de horas (desenvolvimento + testes) × R$ 25.</p>
   <p>• Os preços dentro das telas são ilustrativos, exceto os que você mesmo passou (chácara e hospedagem).</p>
   <p>• <b>Os valores de hospedagem do site (servidor, banco de dados e serviços como o envio automático de WhatsApp e o pagamento online) são cobrados à parte</b> das horas acima. Eles serão informados conforme você aprovar os módulos, porque cada módulo muda o que o site precisa para funcionar.</p>
 </div>
@@ -525,7 +525,7 @@
 </div>
 
 <script>
-  const RATE = 40; // R$ por hora
+  const RATE = 25; // R$ por hora
   const brl = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
   const testH = h => Math.max(2, Math.round(h * 0.3)); // testes: 30% do dev, mínimo 2h
   const boxes = [...document.querySelectorAll('.pick input')];
