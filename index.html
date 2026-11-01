@@ -43,6 +43,8 @@
   .price{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap}
   .hours{font-family:"Archivo Black";font-size:26px}
   .hours small{font-family:"Hind";font-size:13px;color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0;margin-left:4px}
+  .brk{font-family:"Hind";font-size:13px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:500;display:block;margin-bottom:2px}
+  .val{font-family:"Hind";font-size:15px;color:var(--glow);font-weight:700;text-transform:none;letter-spacing:0;margin-left:8px}
   .pick{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;user-select:none;background:var(--surface2);padding:8px 14px;border-radius:999px}
   .pick input{width:18px;height:18px;accent-color:var(--ember)}
   .note{font-size:13px;color:var(--warn);margin-top:8px}
@@ -131,7 +133,7 @@
   <div class="wrap">
     <div class="tag">Proposta de evolução · Queiroz Car</div>
     <h1>Do catálogo de carros para a <span>plataforma completa</span></h1>
-    <p>Separei cada pedido seu e mostro como ficaria a tela de cada um. É um esboço para você ver a ideia antes de começarmos. Cada módulo tem o tempo estimado de desenvolvimento, e você pode marcar só os que quiser: o total no rodapé vai somando.</p>
+    <p>Separei cada pedido seu e mostro como ficaria a tela de cada um. É um esboço para você ver a ideia antes de começarmos. Cada módulo tem o tempo estimado (com testes) e o valor, e você pode marcar só os que quiser: o total no rodapé vai somando.</p>
     <div class="legend">
       <span class="pill">🟦 Fase 1 · organizar o seu dia</span>
       <span class="pill">🟩 Fase 2 · novas vitrines</span>
@@ -428,7 +430,7 @@
       <div class="price"><div class="hours">20h<small>de desenvolvimento</small></div>
         <label class="pick"><input type="checkbox" checked data-h="20" data-name="Loja de usados"> Quero este</label></div>
       <div class="price" style="border:none;margin-top:4px;padding-top:0"><div class="hours" style="font-size:18px">+16h<small>pagamento online (opcional)</small></div>
-        <label class="pick"><input type="checkbox" data-h="16" data-name="Pagamento online na loja (opcional)"> Quero este</label></div>
+        <label class="pick"><input type="checkbox" data-h="16" data-name="Pagamento online na loja (opcional)"> + Pagamento online (opcional)</label></div>
     </div>
     <div class="phone">
       <div class="bar"><span class="logo"><i></i>Loja Queiroz</span><span class="mut">🔍</span></div>
@@ -507,7 +509,8 @@
 
 <div class="foot">
   <p>• As telas acima são <b>esboços para mostrar a ideia</b>. O visual final segue a identidade atual do site (cores, logo e fotos reais dos seus veículos).</p>
-  <p>• Os tempos são <b>estimativas em horas de desenvolvimento</b> (desenvolvedor júnior com apoio de ferramentas de IA) e podem mudar um pouco quando detalharmos cada item.</p>
+  <p>• Os tempos são <b>estimativas em horas</b> (desenvolvedor júnior com apoio de ferramentas de IA) e podem mudar um pouco quando detalharmos cada item. Cada módulo inclui o <b>tempo de testes</b> (cerca de 30% do desenvolvimento, mínimo de 2h) para entregar funcionando de verdade.</p>
+  <p>• Valor da hora: <b>R$ 40</b>. O valor de cada módulo é o total de horas (desenvolvimento + testes) × R$ 40.</p>
   <p>• Os preços dentro das telas são ilustrativos, exceto os que você mesmo passou (chácara e hospedagem).</p>
   <p>• <b>Os valores de hospedagem do site (servidor, banco de dados e serviços como o envio automático de WhatsApp e o pagamento online) são cobrados à parte</b> das horas acima. Eles serão informados conforme você aprovar os módulos, porque cada módulo muda o que o site precisa para funcionar.</p>
 </div>
@@ -522,16 +525,25 @@
 </div>
 
 <script>
+  const RATE = 40; // R$ por hora
+  const brl = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
+  const testH = h => Math.max(2, Math.round(h * 0.3)); // testes: 30% do dev, mínimo 2h
   const boxes = [...document.querySelectorAll('.pick input')];
+  boxes.forEach(b => {
+    const dev = +b.dataset.h, tst = testH(dev), tot = dev + tst;
+    b.dataset.tot = tot;
+    const hours = b.closest('.price').querySelector('.hours');
+    hours.innerHTML = `<span class="brk">Desenvolvimento ${dev}h + Testes ${tst}h</span>${tot}h<span class="val">${brl(tot * RATE)}</span>`;
+  });
   function update(){
     let t = 0, n = 0, rows = '';
     boxes.forEach(b => {
-      const h = +b.dataset.h;
-      if (b.checked){ t += h; n++; rows += `<tr><td>${b.dataset.name}</td><td>${h}h</td></tr>`; }
+      const h = +b.dataset.tot;
+      if (b.checked){ t += h; n++; rows += `<tr><td>${b.dataset.name}</td><td>${h}h · ${brl(h * RATE)}</td></tr>`; }
     });
-    rows += `<tr class="total"><td>Total</td><td>${t}h</td></tr>`;
+    rows += `<tr class="total"><td>Total</td><td>${t}h · ${brl(t * RATE)}</td></tr>`;
     document.getElementById('resumo').innerHTML = n ? rows : '<tr><td>Nenhum módulo marcado.</td><td></td></tr>';
-    document.getElementById('tot').textContent = t + 'h';
+    document.getElementById('tot').textContent = `${t}h · ${brl(t * RATE)}`;
     document.getElementById('cnt').textContent = n + ' de ' + boxes.length + ' módulos selecionados';
   }
   boxes.forEach(b => b.addEventListener('change', update));
